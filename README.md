@@ -1,1 +1,0 @@
-# sd-0x-block10-project-shopping-cart-tests
