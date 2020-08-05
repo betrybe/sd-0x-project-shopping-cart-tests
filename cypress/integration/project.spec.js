@@ -1,4 +1,5 @@
 const fetchMock = require('../mocks/fetch')
+const products = require('../mocks/computerCategory')
 const API_URL = "https://api.mercadolibre.com/sites/MLB/search?q=$computador"
 const PROJECT_URL = './index.html'
 
@@ -8,6 +9,8 @@ const ADD_CART_BUTTON = '.item__add'
 const CART_ITEMS = '.cart__items'
 const EMPTY_CART_BUTTON = '.empty-cart'
 const TOTAL_PRICE = '.total-price'
+
+let results = products.results
 
 const addToCart = (index) => {
   cy.get(ITEM_SELECTOR)
@@ -24,26 +27,27 @@ const countCart = (amount) => {
 }
 
 const checkPrice = (results, indexes) => {
+  console.log(results)
   cy.wait(1000);
   let total = 0;
   indexes.forEach(index => total += results[index].price);
   cy.get(TOTAL_PRICE)
-      .should('have.value', total.toString());
+      .should('have.text', total.toString());
 }
 
 describe('Shopping Cart Project', () => {
-  let results;
+  
   before(() => {
     cy.visit(PROJECT_URL, {
       onBeforeLoad(win) {
         win.fetch = fetchMock;
       },
     });
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        results = data.results
-      })
+    // fetch(API_URL)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     results = data.results
+    //   })
   })
 
   beforeEach(() => {
@@ -51,6 +55,7 @@ describe('Shopping Cart Project', () => {
       .click()
     cy.clearLocalStorage();
   });
+
 
   describe('Listagem de produtos', () => {
     it('Listagem de produtos', () => {
@@ -65,6 +70,7 @@ describe('Shopping Cart Project', () => {
       cy.wait(1000);
       addToCart(36);
       countCart(1);
+      console.log(results[36].id, results[36].title)
       cy.get(CART_ITEMS)
         .children()
         .first()
@@ -100,7 +106,11 @@ describe('Shopping Cart Project', () => {
     it('Carregue o carrinho de compras através do **LocalStorage** ao iniciar a página', () => {
       let first = 36;
       let last = 29;
-      cy.visit(PROJECT_URL);
+      cy.visit(PROJECT_URL, {
+        onBeforeLoad(win) {
+          win.fetch = fetchMock;
+        },
+      });
       cy.wait(1000);
       addToCart(first);
       countCart(1);
@@ -108,8 +118,9 @@ describe('Shopping Cart Project', () => {
         .children()
         .first()
         .should('have.text', `SKU: ${results[first].id} | NAME: ${results[first].title} | PRICE: $${results[first].price}`)
-  
+       
         addToCart(last);
+        cy.wait(1000);
       cy.get(CART_ITEMS)
         .children()
         .last()
@@ -129,6 +140,11 @@ describe('Shopping Cart Project', () => {
 
   describe('Some o valor total dos itens do carrinho de compras de forma assíncrona', () => {
     it('Some o valor total dos itens do carrinho de compras de forma assíncrona', () => {
+      cy.visit(PROJECT_URL, {
+        onBeforeLoad(win) {
+          win.fetch = fetchMock;
+        },
+      });
       addToCart(5);
       checkPrice(results, [5]);
       addToCart(42);
@@ -156,16 +172,22 @@ describe('Shopping Cart Project', () => {
       countCart(0);
     });
   });
-  
+
   describe('Adicionar um texto de "loading" durante uma requisição à API', () => {
     it('Adicionar um texto de "loading" durante uma requisição à API', () => {
+
       cy.visit(PROJECT_URL)
-      cy.request(PROJECT_URL)
+      //   {
+      //   onBeforeLoad(win) {
+      //     win.fetch = fetchMock;
+      //   },
+      // });
+      // cy.request(PROJECT_URL)
       cy.get(LOADING)
         .should('exist')
         .wait(3000)
         .should('not.exist');
     });
   });
-  
+
 });
