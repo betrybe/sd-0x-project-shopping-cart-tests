@@ -1,6 +1,5 @@
 const fetchMock = require('../mocks/fetch')
 const products = require('../mocks/computerCategory')
-const API_URL = "https://api.mercadolibre.com/sites/MLB/search?q=$computador"
 const PROJECT_URL = './index.html'
 
 const LOADING = '.loading';
@@ -43,11 +42,6 @@ describe('Shopping Cart Project', () => {
         win.fetch = fetchMock;
       },
     });
-    // fetch(API_URL)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     results = data.results
-    //   })
   })
 
   beforeEach(() => {
@@ -177,12 +171,6 @@ describe('Shopping Cart Project', () => {
     it('Adicionar um texto de "loading" durante uma requisição à API', () => {
 
       cy.visit(PROJECT_URL)
-      //   {
-      //   onBeforeLoad(win) {
-      //     win.fetch = fetchMock;
-      //   },
-      // });
-      // cy.request(PROJECT_URL)
       cy.get(LOADING)
         .should('exist')
         .wait(3000)
