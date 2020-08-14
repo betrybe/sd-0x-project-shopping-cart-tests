@@ -1,3 +1,4 @@
+const fetchMock = require('../mocks/fetch')
 const API_URL = "https://api.mercadolibre.com/sites/MLB/search?q=$computador"
 const PROJECT_URL = './index.html'
 
@@ -33,7 +34,11 @@ const checkPrice = (results, indexes) => {
 describe('Shopping Cart Project', () => {
   let results;
   before(() => {
-    cy.visit(PROJECT_URL);
+    cy.visit(PROJECT_URL, {
+      onBeforeLoad(win) {
+        win.fetch = fetchMock;
+      },
+    });
     fetch(API_URL)
       .then((response) => response.json())
       .then((data) => {
