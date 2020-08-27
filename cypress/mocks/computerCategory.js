@@ -9675,6 +9675,5 @@ const results = {
     ]
   }
 
-  console.log(results.results.length)
 
 module.exports = results
