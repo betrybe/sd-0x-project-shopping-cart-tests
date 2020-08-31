@@ -35,21 +35,14 @@ const checkPrice = (results, indexes) => {
 }
 
 describe('Shopping Cart Project', () => {
-  
-  before(() => {
+  beforeEach(() => {
     cy.visit(PROJECT_URL, {
       onBeforeLoad(win) {
         win.fetch = fetchMock;
       },
     });
-  })
-
-  beforeEach(() => {
-    cy.get(EMPTY_CART_BUTTON)
-      .click()
     cy.clearLocalStorage();
   });
-
 
   describe('Listagem de produtos', () => {
     it('Listagem de produtos', () => {
