@@ -44,7 +44,7 @@ describe('Shopping Cart Project', () => {
     cy.clearLocalStorage();
   });
 
-  describe('Listagem de produtos', () => {
+  describe('1 - Crie uma listagem de produtos', () => {
     it('Listagem de produtos', () => {
       cy.get(ITEM_SELECTOR)
         .should('exist')
@@ -52,7 +52,7 @@ describe('Shopping Cart Project', () => {
     });    
   });
 
-  describe('Adicione o produto ao carrinho de compras', () => {
+  describe('2 - Adicione o produto ao carrinho de compras', () => {
     it('Adicione o produto ao carrinho de compras',() => {
       cy.wait(1000);
       addToCart(36);
@@ -65,7 +65,7 @@ describe('Shopping Cart Project', () => {
     });
   });
   
-  describe('Remova o item do carrinho de compras ao clicar nele', () => {
+  describe('3 - Remova o item do carrinho de compras ao clicar nele', () => {
     it('Remova o item do carrinho de compras ao clicar nele', () => {
       addToCart(29);
       addToCart(31);
@@ -89,7 +89,7 @@ describe('Shopping Cart Project', () => {
     });
   });
 
-  describe('Carregue o carrinho de compras através do **LocalStorage** ao iniciar a página', () => {
+  describe('4 - Carregue o carrinho de compras através do **LocalStorage** ao iniciar a página', () => {
     it('Carregue o carrinho de compras através do **LocalStorage** ao iniciar a página', () => {
       let first = 36;
       let last = 29;
@@ -125,7 +125,7 @@ describe('Shopping Cart Project', () => {
     });
   });
 
-  describe('Some o valor total dos itens do carrinho de compras de forma assíncrona', () => {
+  describe('5 - Some o valor total dos itens do carrinho de compras de forma assíncrona', () => {
     it('Some o valor total dos itens do carrinho de compras de forma assíncrona', () => {
       cy.visit(PROJECT_URL, {
         onBeforeLoad(win) {
@@ -148,7 +148,7 @@ describe('Shopping Cart Project', () => {
     });
   });
 
-  describe('Botão para limpar carrinho de compras', () => {
+  describe('6 - Crie um botão para limpar carrinho de compras', () => {
     it('Botão para limpar carrinho de compras', () => {
       addToCart(3);
       addToCart(0);
@@ -160,7 +160,7 @@ describe('Shopping Cart Project', () => {
     });
   });
 
-  describe('Adicionar um texto de "loading" durante uma requisição à API', () => {
+  describe('7 - Adicione um texto de `loading` durante uma requisição à API', () => {
     it('Adicionar um texto de "loading" durante uma requisição à API', () => {
 
       cy.visit(PROJECT_URL)
@@ -170,5 +170,4 @@ describe('Shopping Cart Project', () => {
         .should('not.exist');
     });
   });
-
 });
